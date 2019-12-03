@@ -41,7 +41,7 @@ dependencies {
     compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
 
     //JBOSS -----------------------------------------------------------------------------------------------------
-    compile 'org.wildfly:wildfly-spec-api:17.0.0.Final'
+    compile 'org.wildfly:wildfly-spec-api:17.0.1.Final'
 
     // https://mvnrepository.com/artifact/jboss/jboss-system
     compile group: 'jboss', name: 'jboss-system', version: '4.2.2.GA'
