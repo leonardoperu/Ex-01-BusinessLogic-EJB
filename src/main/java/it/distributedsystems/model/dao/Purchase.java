@@ -12,7 +12,7 @@ public class Purchase implements Serializable {
     protected int id;
     protected int purchaseNumber;
     protected Customer customer;
-    protected Set<Product> products;
+    protected Set<ProdPurch> products;
 
     public Purchase() {}
 
@@ -23,7 +23,7 @@ public class Purchase implements Serializable {
         this.customer = customer;
     }
 
-    public Purchase(int purchaseNumber, Customer customer, Set<Product> products) {
+    public Purchase(int purchaseNumber, Customer customer, Set<ProdPurch> products) {
         this.purchaseNumber = purchaseNumber;
         this.customer = customer;
         this.products = products;
@@ -59,7 +59,7 @@ public class Purchase implements Serializable {
             fetch=FetchType.LAZY,
             mappedBy = "purchase"
     )
-    public Set<Product> getProducts() { return products; }
+    public Set<ProdPurch> getProducts() { return products; }
 
-    public void setProducts(Set<Product> products) { this.products = products; }
+    public void setProducts(Set<ProdPurch> products) { this.products = products; }
 }

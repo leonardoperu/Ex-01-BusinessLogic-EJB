@@ -1,6 +1,6 @@
 package it.distributedsystems.web;
 
-import it.distributedsystems.model.ejb.HelloBean;
+import it.distributedsystems.model.ejb.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +20,7 @@ public class HelloServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HelloBean ejb = new HelloBean();
+        MyHelloBean ejb = new MyHelloBean();
         String name = request.getParameter("name");
         if (name == null) name = "World";
         PrintWriter out = response.getWriter();
