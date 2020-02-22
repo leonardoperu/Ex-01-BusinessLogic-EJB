@@ -12,7 +12,7 @@ public class Product implements Serializable {
     protected int id;
     protected int productNumber;
     protected String name;
-    protected int price;
+    protected float price;
     protected Set<ProdPurch> purchases;
     protected Producer producer;
 
@@ -45,11 +45,11 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
@@ -66,7 +66,7 @@ public class Product implements Serializable {
 
     @ManyToOne(
             cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     public Producer getProducer() {
         return producer;

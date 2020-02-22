@@ -1,20 +1,21 @@
 package it.distributedsystems.model.ejb;
 
 //import it.distributedsystems.model.logging.OperationLogger;
-import it.distributedsystems.model.dao.Customer;
-import it.distributedsystems.model.dao.CustomerDAO;
+
 import it.distributedsystems.model.dao.Producer;
 import it.distributedsystems.model.dao.ProducerDAO;
 
-import javax.ejb.*;
-import javax.interceptor.Interceptors;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
-@Local(CustomerDAO.class)
-//@Remote(CustomerDAO.class) //-> TODO: serve nella versione clustering???
+//@Local(ProducerDAO.class)
+@Remote(ProducerDAO.class) //-> TODO: serve nella versione clustering???
 public class EJB3ProducerDAO implements ProducerDAO {
 
     @PersistenceContext(unitName = "distributed-systems-demo")
@@ -25,6 +26,7 @@ public class EJB3ProducerDAO implements ProducerDAO {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int insertProducer(Producer producer) {
         em.persist(producer);
+        em.flush();
         return producer.getId();
     }
 
@@ -34,7 +36,7 @@ public class EJB3ProducerDAO implements ProducerDAO {
 
         Producer producer;
         if(name != null && !name.equals("")) {
-            producer = (Producer) em.createQuery("FROM Producer p WHERE p.name = :producerName")
+            producer = (Producer) em.createQuery("SELECT p FROM Producer p WHERE p.name = :producerName")
                     .setParameter("producerName", name)
                     .getSingleResult();
             em.remove(producer);
@@ -59,7 +61,7 @@ public class EJB3ProducerDAO implements ProducerDAO {
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Producer findProducerByName(String name) {
         if(name != null && !name.equals("")) {
-            return (Producer) em.createQuery("FROM Producer p where p.name = :producerName").
+            return (Producer) em.createQuery("SELECT p FROM Producer p where p.name = :producerName").
                     setParameter("producerName", name).getSingleResult();
         } else
             return null;
@@ -68,12 +70,14 @@ public class EJB3ProducerDAO implements ProducerDAO {
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Producer findProducerById(int id) {
-        return em.find(Producer.class, id);
+        Producer result = em.find(Producer.class, id);
+        System.out.println("* * * * * Ho cercato producer per id * * * * *");
+        return result;
     }
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public List<Producer> getAllProducers() {
-        return em.createQuery("FROM Producer").getResultList();
+        return em.createQuery("SELECT p FROM Producer p").getResultList();
     }
 }

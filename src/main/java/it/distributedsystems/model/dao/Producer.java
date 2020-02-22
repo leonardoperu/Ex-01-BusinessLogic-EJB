@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+//@Table(name = "PRODUCER")
 public class Producer implements Serializable {
 
     private static final long serialVersionUID = 121212212121212121L;

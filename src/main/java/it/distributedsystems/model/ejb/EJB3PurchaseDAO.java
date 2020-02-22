@@ -1,29 +1,24 @@
 package it.distributedsystems.model.ejb;
 
 //import it.distributedsystems.model.logging.OperationLogger;
-import it.distributedsystems.model.dao.Customer;
-import it.distributedsystems.model.dao.Product;
-import it.distributedsystems.model.dao.Purchase;
-import it.distributedsystems.model.dao.PurchaseDAO;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import it.distributedsystems.model.dao.*;
 
-import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 
 @Stateless
-@Local(PurchaseDAO.class)
-//@Remote(PurchaseDAO.class)  //-> TODO: serve nella versione clustering???
+//@Local(PurchaseDAO.class)
+@Remote(PurchaseDAO.class)  //-> TODO: serve nella versione clustering???
  public class EJB3PurchaseDAO implements PurchaseDAO {
 
     @PersistenceContext(unitName = "distributed-systems-demo")
@@ -38,11 +33,11 @@ import javax.persistence.PersistenceContext;
             purchase.setCustomer(em.merge(purchase.getCustomer()));
 
         //riattacco i product al contesto di persistenza
-        Set<Product> products = new HashSet<Product>();
+        Set<ProdPurch> products = new HashSet<ProdPurch>();
 
         if (purchase.getProducts()!= null ){
-            for (Product product : purchase.getProducts()){
-                if(product != null && product.getId() > 0)
+            for (ProdPurch product : purchase.getProducts()){
+                if(product != null && product.getProduct().getId() > 0)
                     products.add(em.merge(product));
             }
             purchase.setProducts(products);

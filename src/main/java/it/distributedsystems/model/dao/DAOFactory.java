@@ -8,7 +8,11 @@ public abstract class DAOFactory {
 
     public static DAOFactory getDAOFactory(String whichFactory) {
         try {
-            return (DAOFactory) new EJB3DaoFactory(); //Class.forName(whichFactory).newInstance();
+            DAOFactory result = (DAOFactory) new EJB3DaoFactory();
+            System.out.println("============= DEBUG ===================");
+            System.out.println("DAOFactory ottenuta!");
+            System.out.println("=======================================");
+            return result;  //Class.forName(whichFactory).newInstance();
         } catch (NullPointerException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -29,4 +33,6 @@ public abstract class DAOFactory {
     public abstract ProductDAO getProductDAO();
 
     public abstract ProducerDAO getProducerDAO();
+
+    public abstract ProdPurchDAO getProdPurchDAO();
 }

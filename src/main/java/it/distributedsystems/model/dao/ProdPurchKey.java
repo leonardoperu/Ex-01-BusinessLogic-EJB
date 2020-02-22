@@ -42,9 +42,9 @@ public final class ProdPurchKey implements Serializable {
         else return false;
     }
 
-    /*public int hashCode() {
-        return ((purchaseId==null?0:purchaseId.hashCode())^((int) itemId));
-    }*/
+    public int hashCode() {
+        return (purchaseId+productId);
+    }
 
     public String toString() {
         return ""+purchaseId+"-"+productId;

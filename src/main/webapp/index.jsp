@@ -18,6 +18,10 @@
 
 				.append("<td>")
 				.append( (product.getProducer() == null) ? "n.d." : product.getProducer().getName() )
+				.append("</td>")
+
+				.append("<td>")
+				.append( product.getPrice() + " &euro;" )
 				.append("</td>");
 
 		html
@@ -40,14 +44,21 @@
 
 	<head>
 		<title>HOMEPAGE DISTRIBUTED SYSTEM EJB</title>
-	
+
 		<meta http-equiv="Pragma" content="no-cache"/>
 		<meta http-equiv="Expires" content="Mon, 01 Jan 1996 23:59:59 GMT"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<meta name="Author" content="you">
 
 		<link rel="StyleSheet" href="styles/default.css" type="text/css" media="all" />
-	
+
+		<style>
+			table, th, td {
+				padding: 10px;
+				border: 1px solid #00004d;
+				border-collapse: collapse;
+			}
+		</style>
 	</head>
 	
 	<body>
@@ -65,8 +76,12 @@
 		if ( operation != null && operation.equals("insertCustomer") ) {
 			Customer customer = new Customer();
 			customer.setName( request.getParameter("name") );
-			int id = customerDAO.insertCustomer( customer );
-			out.println("<!-- inserted customer '" + customer.getName() + "', with id = '" + id + "' -->");
+			try {
+				int id = customerDAO.insertCustomer(customer);
+				out.println("<!-- inserted customer '" + customer.getName() + "', with id = '" + id + "' -->");
+			} catch(Exception e) {
+				out.println("Errore inserimento customer.");
+			}
 		}
 		else if ( operation != null && operation.equals("insertProducer") ) {
 			Producer producer = new Producer();
@@ -77,9 +92,10 @@
 		else if ( operation != null && operation.equals("insertProduct") ) {
 			Product product = new Product();
 			product.setName( request.getParameter("name") );
+			product.setPrice(Float.parseFloat(request.getParameter("price")));
 			product.setProductNumber(Integer.parseInt(request.getParameter("number")));
 
-			Producer producer = producerDAO.findProducerByName(request.getParameter("producer"));
+			Producer producer = producerDAO.findProducerById(Integer.parseInt(request.getParameter("producer")));
 			product.setProducer(producer);
 			int id = productDAO.insertProduct(product);
 			out.println("<!-- inserted product '" + product.getName() + "' with id = '" + id + "' -->");
@@ -109,7 +125,7 @@
 		</form>
 	</div>
 
-	<div>
+	<!--<div>
 		<p>Add Product:</p>
 		<form>
 			Name: <input type="text" name="name"/><br/>
@@ -117,17 +133,18 @@
 			<input type="hidden" name="operation" value="insertProduct"/>
 			<input type="submit" name="submit" value="submit"/>
 		</form>
-	</div>
+	</div>-->
 	<%
-		List producers = producerDAO.getAllProducers();
+		List<Producer> producers = producerDAO.getAllProducers();
 		if ( producers.size() > 0 ) {
 	%>
 	<div>
 		<p>Add Product:</p>
 		<form>
-			Name: <input type="text" name="name"/><br/>
-			Product Number: <input type="text" name="number"/><br/>
-			Producers: <select name="producer">
+			Name: <input type="text" name="name"required/><br/>
+			Product Number: <input type="text" name="number" required/><br/>
+			Price: <input type="number" name="price" step="0.01" required/><br/>
+			Producer: <select name="producer" required>
 			<%
 				Iterator iterator = producers.iterator();
 				while ( iterator.hasNext() ) {
@@ -154,8 +171,8 @@
 	%>
 	<div>
 		<p>Products currently in the database:</p>
-		<table>
-			<tr><th>Name</th><th>ProductNumber</th><th>Publisher</th><th></th></tr>
+		<table width="50%">
+			<tr><th>ProductName</th><th>ProductNumber</th><th>Producer</th><th>Price</th></tr>
 			<%= printTableRows( productDAO.getAllProducts(), request.getContextPath() ) %>
 		</table>
 	</div>

@@ -1,26 +1,22 @@
 package it.distributedsystems.model.ejb;
 
 //import it.distributedsystems.model.logging.OperationLogger;
-import it.distributedsystems.model.dao.*;
+import it.distributedsystems.model.dao.Producer;
+import it.distributedsystems.model.dao.Product;
+import it.distributedsystems.model.dao.ProductDAO;
+import it.distributedsystems.model.dao.Purchase;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.interceptor.Interceptors;
+import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
 @Stateless
-@Local(ProductDAO.class)
-//@Remote(ProductDAO.class)  //-> TODO: serve nella versione clustering???
+//@Local(ProductDAO.class)
+@Remote(ProductDAO.class)  //-> TODO: serve nella versione clustering???
 public class EJB3ProductDAO implements ProductDAO {
 
     @PersistenceContext(unitName = "distributed-systems-demo")
@@ -31,8 +27,10 @@ public class EJB3ProductDAO implements ProductDAO {
 //    @Interceptors(OperationLogger.class)
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int insertProduct(Product product) {
-
+        if(product.getProducer()!=null && product.getProducer().getId()>0)
+            product.setProducer(em.merge(product.getProducer()));
         em.persist(product);
+        System.out.println("product inserito");
         return product.getId();
     }
 
@@ -105,8 +103,9 @@ public class EJB3ProductDAO implements ProductDAO {
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public List<Product> getAllProductsByPurchase(Purchase purchase) {
         // riattacco il product al contesto di persistenza con una merge
-        return em.createQuery("FROM Product p WHERE :purchaseId = p.purchase.id").
-                setParameter("purchaseId", purchase.getId()).getResultList();
+        //return em.createQuery("FROM Product p WHERE :purchaseId = p.purchases.id").
+          //      setParameter("purchaseId", purchase.getId()).getResultList();
+        return new ArrayList<Product>();
     }
 }
 

@@ -1,18 +1,21 @@
 package it.distributedsystems.model.ejb;
 
 //import it.distributedsystems.model.logging.OperationLogger;
+
 import it.distributedsystems.model.dao.Customer;
 import it.distributedsystems.model.dao.CustomerDAO;
 
-import javax.ejb.*;
-import javax.interceptor.Interceptors;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Stateless
-@Local(CustomerDAO.class)
-//@Remote(CustomerDAO.class) //-> TODO: serve nella versione clustering???
+@Stateless//(mappedName="customerDAO")
+//@Local(CustomerDAO.class)
+@Remote(CustomerDAO.class) //-> TODO: serve nella versione clustering???
 public class EJB3CustomerDAO implements CustomerDAO {
 
     @PersistenceContext(unitName = "distributed-systems-demo")
