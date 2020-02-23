@@ -6,11 +6,11 @@ public interface PurchaseDAO {
 
     public int insertPurchase(Purchase purchase);
 
-    //public int removePurchaseByNumber(int purchaseNumber);
+    public int removePurchasesByNumber(int purchaseNumber);
 
     public int removePurchaseById(int id);
 
-    public Purchase findPurchaseByNumber(int purchaseNumber);
+    public List<Purchase> findPurchasesByNumber(int purchaseNumber);
 
     public Purchase findPurchaseById(int id);
 

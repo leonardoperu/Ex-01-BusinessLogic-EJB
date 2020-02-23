@@ -2,7 +2,10 @@ package it.distributedsystems.model.ejb;
 
 //import it.distributedsystems.model.logging.OperationLogger;
 
-import it.distributedsystems.model.dao.*;
+import it.distributedsystems.model.dao.Customer;
+import it.distributedsystems.model.dao.Product;
+import it.distributedsystems.model.dao.Purchase;
+import it.distributedsystems.model.dao.PurchaseDAO;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -10,9 +13,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 
@@ -32,40 +33,31 @@ import java.util.Set;
         if (purchase.getCustomer()!= null && purchase.getCustomer().getId() > 0)
             purchase.setCustomer(em.merge(purchase.getCustomer()));
 
-        //riattacco i product al contesto di persistenza
-        Set<ProdPurch> products = new HashSet<ProdPurch>();
-
-        if (purchase.getProducts()!= null ){
-            for (ProdPurch product : purchase.getProducts()){
-                if(product != null && product.getProduct().getId() > 0)
-                    products.add(em.merge(product));
-            }
-            purchase.setProducts(products);
-        }
+        //riattacco il product al contesto di persistenza
+        if (purchase.getProduct()!= null && purchase.getProduct().getId() > 0)
+            purchase.setProduct(em.merge(purchase.getProduct()));
 
         em.persist(purchase);
         return purchase.getId();
     }
 
-    /*
+
     @Override
-    public int removePurchaseByNumber(int purchaseNumber) {
-        Purchase purchase = (Purchase) em.createQuery("DELETE FROM Purchase p WHERE p.purchaseNumber LIKE :num").
-                setParameter("num", purchaseNumber).getSingleResult();
-        if (purchase!=null){
-            int id = purchase.getId();
-            //Cancello le associazioni tra l'autore da rimuovere e i libri da lui scritti
-            //dalla tabella di associazione Book_Author
-            em.createNativeQuery("DELETE FROM Customer WHERE purchase_id ="+id+" ;").executeUpdate();
-
-            em.remove(purchase);
-
-            return id;
+    public int removePurchasesByNumber(int purchaseNumber) {
+        List<Purchase> purchases = em.createQuery("DELETE FROM Purchase p WHERE p.purchaseNumber = :num").
+                setParameter("num", purchaseNumber).getResultList();
+        int removed = 0;
+        for (Purchase p : purchases) {
+            if (p != null) {
+                int id = p.getId();
+                em.createNativeQuery("DELETE FROM Customer WHERE purchase_id =" + id + " ;").executeUpdate();
+                em.remove(p);
+                removed++;
+            }
         }
-        else
-            return 0;
+        return removed;
     }
-    */
+
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -85,9 +77,9 @@ import java.util.Set;
     }
 
     @Override
-    public Purchase findPurchaseByNumber(int purchaseNumber) {
-        return (Purchase) em.createQuery("select p from Purchase p where p.purchaseNumber = :num").
-                setParameter("num", purchaseNumber).getSingleResult();
+    public List<Purchase> findPurchasesByNumber(int purchaseNumber) {
+        return em.createQuery("FROM Purchase p WHERE p.purchaseNumber = :purchaseNumber").
+                setParameter("purchaseNumber", purchaseNumber).getResultList();
     }
 
     @Override
@@ -109,7 +101,7 @@ import java.util.Set;
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public List<Purchase> findAllPurchasesByCustomer(Customer customer) {
         //Non è stato necessario usare una fetch join (nonostante Purchase.customer fosse mappato LAZY)
-        //perché gli id delle entità LAZY collegate vengono comunque mantenuti e sono accessibili
+        //        //perché gli id delle entità LAZY collegate vengono comunque mantenuti e sono accessibili
         return em.createQuery("FROM Purchase p WHERE :customerId = p.customer.id").
                 setParameter("customerId", customer.getId()).getResultList();
     }
@@ -117,14 +109,16 @@ import java.util.Set;
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public List<Purchase> findAllPurchasesByProduct(Product product) {
-        if (product != null){
+        /*if (product != null){
             em.merge(product); // riattacco il product al contesto di persistenza con una merge
             return em.createQuery("SELECT DISTINCT (p) FROM Purchase p JOIN FETCH p.products JOIN FETCH p.customer WHERE :product MEMBER OF p.products").
                     setParameter("product", product).getResultList();
         }
         else
             return em.createQuery("SELECT DISTINCT (p) FROM Purchase p JOIN FETCH p.products JOIN FETCH p.customer").getResultList();
-
+*/
+        return em.createQuery("FROM Purchase p WHERE p.product = :prod").
+                setParameter("prod", product).getResultList();
     }
 
 

@@ -1,7 +1,5 @@
 package it.distributedsystems.model.dao;
 
-import java.util.List;
-
 public interface ProdPurchDAO {
 
     public int insertProdPurchDAO(ProdPurchDAO ProdPurchDAO);
@@ -10,9 +8,9 @@ public interface ProdPurchDAO {
 
     public int removeProdPurchDAOById(int id);
 
-    public ProdPurchDAO findProdPurchDAOByName(String name);
+    //public ProdPurchDAO findProdPurchDAOByName(String name);
 
-    public ProdPurchDAO findProdPurchDAOById(int id);
+    //public ProdPurchDAO findProdPurchDAOById(int id);
 
-    public List<ProdPurchDAO> getAllProdPurchDAOs();
+    //public List<ProdPurchDAO> getAllProdPurchDAOs();
 }

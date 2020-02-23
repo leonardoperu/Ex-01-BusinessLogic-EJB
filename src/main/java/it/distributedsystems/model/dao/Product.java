@@ -13,7 +13,7 @@ public class Product implements Serializable {
     protected int productNumber;
     protected String name;
     protected float price;
-    protected Set<ProdPurch> purchases;
+    protected Set<Purchase> purchases;
     protected Producer producer;
 
     public Product() {}
@@ -56,11 +56,11 @@ public class Product implements Serializable {
     @OneToMany(
             cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
             fetch = FetchType.LAZY, mappedBy = "product"
-    ) public Set<ProdPurch> getPurchases() {
+    ) public Set<Purchase> getPurchases() {
         return purchases;
     }
 
-    public void setPurchases(Set<ProdPurch> purchases) {
+    public void setPurchases(Set<Purchase> purchases) {
         this.purchases = purchases;
     }
 

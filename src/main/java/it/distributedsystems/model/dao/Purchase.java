@@ -2,7 +2,13 @@ package it.distributedsystems.model.dao;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+
+/*
+* Purchase inteso come acquisto di un prodotto (in quantità X) da parte di un cliente.
+* Ogni ordine (contenuto di un carrello acquistato) contiene N Purchase.
+* Ogni Purchase ha il proprio id. Purchase nello stesso ordine hanno lo stesso purchase number.
+*
+* */
 
 @Entity
 public class Purchase implements Serializable {
@@ -12,21 +18,25 @@ public class Purchase implements Serializable {
     protected int id;
     protected int purchaseNumber;
     protected Customer customer;
-    protected Set<ProdPurch> products;
+    protected Product product;
+    protected int quantity;
 
     public Purchase() {}
 
-    public Purchase(int purchaseNumber) { this.purchaseNumber = purchaseNumber; }
+    public Purchase(int purchaseNumber) {
+        this.purchaseNumber = purchaseNumber;
+    }
 
     public Purchase(int purchaseNumber, Customer customer) {
         this.purchaseNumber = purchaseNumber;
         this.customer = customer;
     }
 
-    public Purchase(int purchaseNumber, Customer customer, Set<ProdPurch> products) {
+    public Purchase(int purchaseNumber, Customer customer, Product product, int quantity) {
         this.purchaseNumber = purchaseNumber;
         this.customer = customer;
-        this.products = products;
+        this.product = product;
+        this.quantity = quantity;
     }
 
     @Id
@@ -39,8 +49,10 @@ public class Purchase implements Serializable {
         this.id = id;
     }
 
-    @Column(unique = true)
-    public int getPurchaseNumber() { return id; }
+    //@Column(unique = true)
+    public int getPurchaseNumber() {
+        return purchaseNumber;
+    }
 
     public void setPurchaseNumber(int purchaseNumber) {
         this.purchaseNumber = purchaseNumber;
@@ -50,16 +62,29 @@ public class Purchase implements Serializable {
             cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
             fetch = FetchType.LAZY
     )
-    public Customer getCustomer() { return customer; }
+    public Customer getCustomer() {
+        return customer;
+    }
 
-    public void setCustomer(Customer customer) { this.customer = customer; }
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
-    @OneToMany(
+    @ManyToOne(
             cascade={CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
-            fetch=FetchType.LAZY,
-            mappedBy = "purchase"
+            fetch=FetchType.LAZY
     )
-    public Set<ProdPurch> getProducts() { return products; }
+    public Product getProduct() { return product; }
 
-    public void setProducts(Set<ProdPurch> products) { this.products = products; }
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }
