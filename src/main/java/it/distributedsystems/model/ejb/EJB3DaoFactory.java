@@ -42,10 +42,11 @@ public class EJB3DaoFactory extends DAOFactory {
             InitialContext context = getInitialContext();
             //CustomerDAO result = (CustomerDAO)context.lookup("java:global/distributed-systems-demo/distributed-systems-demo.war/EJB3CustomerDAO!it.distributedsystems.model.dao.CustomerDAO");
             CustomerDAO result = (CustomerDAO)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3CustomerDAO!it.distributedsystems.model.dao.CustomerDAO");
-            System.out.println("============= DEBUG ===================");
+            /*System.out.println("============= DEBUG ===================");
             System.out.println("CustomerDAO ottenuto!");
             System.out.println(result.toString());
-            System.out.println("=======================================");
+            System.out.println("=======================================");*/
+
             /* java:global/distributed-systems-demo/distributed-systems-demo.jar/EJB3CustomerDAO!it.distributedsystems.model.dao.CustomerDAO
 	        java:app/distributed-systems-demo.jar/EJB3CustomerDAO!it.distributedsystems.model.dao.CustomerDAO
 	        java:module/EJB3CustomerDAO!it.distributedsystems.model.dao.CustomerDAO
@@ -69,10 +70,11 @@ public class EJB3DaoFactory extends DAOFactory {
             InitialContext context = getInitialContext();
             //PurchaseDAO result = (PurchaseDAO)context.lookup("distributed-systems-demo/EJB3PurchaseDAO/local");
             PurchaseDAO result = (PurchaseDAO)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3PurchaseDAO!it.distributedsystems.model.dao.PurchaseDAO");
-            System.out.println("============= DEBUG ===================");
+            /*System.out.println("============= DEBUG ===================");
             System.out.println("PurchaseDAO ottenuto!");
             System.out.println(result.toString());
-            System.out.println("=======================================");
+            System.out.println("=======================================");*/
+
             /*java:global/distributed-systems-demo/distributed-systems-demo.jar/EJB3PurchaseDAO!it.distributedsystems.model.dao.PurchaseDAO
 	        java:app/distributed-systems-demo.jar/EJB3PurchaseDAO!it.distributedsystems.model.dao.PurchaseDAO
 	        java:module/EJB3PurchaseDAO!it.distributedsystems.model.dao.PurchaseDAO
@@ -92,10 +94,11 @@ public class EJB3DaoFactory extends DAOFactory {
             InitialContext context = getInitialContext();
             //ProductDAO result = (ProductDAO)context.lookup("distributed-systems-demo/EJB3ProductDAO/local");
             ProductDAO result = (ProductDAO)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3ProductDAO!it.distributedsystems.model.dao.ProductDAO");
-            System.out.println("============= DEBUG ===================");
+            /*System.out.println("============= DEBUG ===================");
             System.out.println("ProductDAO ottenuto!");
             System.out.println(result.toString());
-            System.out.println("=======================================");
+            System.out.println("=======================================");*/
+
             /*
             java:global/distributed-systems-demo/distributed-systems-demo.jar/EJB3ProductDAO!it.distributedsystems.model.dao.ProductDAO
 	        java:app/distributed-systems-demo.jar/EJB3ProductDAO!it.distributedsystems.model.dao.ProductDAO
@@ -117,10 +120,11 @@ public class EJB3DaoFactory extends DAOFactory {
             InitialContext context = getInitialContext();
             /*//ProducerDAO result = (ProducerDAO)context.lookup("distributed-systems-demo/EJB3ProducerDAO/local");*/
             ProducerDAO result = (ProducerDAO)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3ProducerDAO!it.distributedsystems.model.dao.ProducerDAO");
-            System.out.println("============= DEBUG ===================");
+            /*System.out.println("============= DEBUG ===================");
             System.out.println("ProducerDAO ottenuto!");
             System.out.println(result.toString());
-            System.out.println("=======================================");
+            System.out.println("=======================================");*/
+
             /* java:global/distributed-systems-demo/distributed-systems-demo.jar/EJB3ProducerDAO!it.distributedsystems.model.dao.CustomerDAO
 	        java:app/distributed-systems-demo.jar/EJB3ProducerDAO!it.distributedsystems.model.dao.CustomerDAO
 	        java:module/EJB3ProducerDAO!it.distributedsystems.model.dao.CustomerDAO

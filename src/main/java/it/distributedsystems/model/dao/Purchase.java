@@ -72,7 +72,7 @@ public class Purchase implements Serializable {
 
     @ManyToOne(
             cascade={CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
-            fetch=FetchType.LAZY
+            fetch=FetchType.EAGER
     )
     public Product getProduct() { return product; }
 

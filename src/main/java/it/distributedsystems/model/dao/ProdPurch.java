@@ -18,7 +18,7 @@ public class ProdPurch implements Serializable {
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}//,
             //fetch = FetchType.EAGER
-    ) @MapsId("purchaseId") private Purchase purchase;
+    ) @MapsId("purchaseId") private Purchase2 purchase;
 
     private int quantity;
 
@@ -26,7 +26,7 @@ public class ProdPurch implements Serializable {
         this.pkey = new ProdPurchKey();
     }
 
-    public ProdPurch(Product prod, Purchase pur, int quantity) {
+    public ProdPurch(Product prod, Purchase2 pur, int quantity) {
         this.product = prod;
         this.purchase = pur;
         this.pkey = new ProdPurchKey(prod.getId(), pur.getId());
@@ -49,11 +49,11 @@ public class ProdPurch implements Serializable {
         this.product = product;
     }
 
-    public Purchase getPurchase() {
+    public Purchase2 getPurchase() {
         return purchase;
     }
 
-    public void setPurchase(Purchase purchase) {
+    public void setPurchase(Purchase2 purchase) {
         this.purchase = purchase;
     }
 

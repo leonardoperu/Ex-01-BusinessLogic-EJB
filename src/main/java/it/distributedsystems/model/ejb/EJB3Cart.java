@@ -24,7 +24,7 @@ public class EJB3Cart implements Cart {
 
     public EJB3Cart() {
         this.customer = null;
-        this.cartNumber = 1;
+        //this.cartNumber = 1;
         this.purchases = new ArrayList<Purchase>();
     }
 
@@ -79,6 +79,7 @@ public class EJB3Cart implements Cart {
     public void submit() {
         for (Purchase p : purchases)
             ejb3PurchaseDAO.insertPurchase(p);
+        this.clearCart();
     }
 
     @Override

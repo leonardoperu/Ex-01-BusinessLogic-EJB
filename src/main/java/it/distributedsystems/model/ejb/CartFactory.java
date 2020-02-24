@@ -4,13 +4,41 @@ import org.apache.log4j.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import java.io.*;
 import java.util.Hashtable;
+import java.util.Scanner;
 
 public class CartFactory {
 
     private static Logger logger = Logger.getLogger("DAOFactory");
+    private int number;
+    private static File f = new File("cartnumber.txt");;
 
     public CartFactory() {
+        /*try {
+            String path = new java.io.File( "." ).getCanonicalPath();
+            System.out.println("*********************************************");
+            System.out.println("PATH: "+path);
+            System.out.println("*********************************************");
+            File f = new File();
+        } catch (IOException e) {
+
+        }*/
+        if (!f.isFile()) {
+            try {
+                f.createNewFile();
+                System.out.println("FILE cartnumber.txt CREATO CON SUCCESSO");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            Scanner s = new Scanner(f);
+            this.number = s.nextInt();
+            s.close();
+        } catch (Exception e) {
+            number = 100;
+        }
     }
 
     private static InitialContext getInitialContext() throws Exception {
@@ -26,8 +54,9 @@ public class CartFactory {
         try {
             InitialContext context = getInitialContext();
             Cart result = (Cart)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3Cart!it.distributedsystems.model.ejb.Cart?stateful");
+            result.setCartNumber(generateCartNumber());
             System.out.println("============= DEBUG ===================");
-            System.out.println("CART ottenuto!");
+            System.out.println("CART (#" + result.getCartNumber() + ") ottenuto!");
             System.out.println(result.toString());
             System.out.println("=======================================");
             return result;
@@ -35,5 +64,16 @@ public class CartFactory {
             logger.error("Error looking up CART", var3);
             return null;
         }
+    }
+
+    public int generateCartNumber() {
+        try {
+            PrintWriter pw = new PrintWriter(f);
+            pw.print(++this.number);
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return number;
     }
 }

@@ -98,6 +98,32 @@
 		return html.toString();
 	}
 
+	String printPreviousOrders(List<Purchase>purchases, String url) {
+		StringBuffer html = new StringBuffer();
+		for (Purchase purchase : purchases) {
+			html
+					.append("<tr>")
+					.append("<td>")
+					.append(purchase.getProduct().getName())
+					.append("</td>")
+
+					.append("<td>")
+					.append( (purchase.getProduct().getProducer() == null) ? "n.d." : purchase.getProduct().getProducer().getName() )
+					.append("</td>")
+
+					.append("<td>")
+					.append( purchase.getQuantity() )
+					.append("</td>")
+
+					.append("<td>")
+					.append( purchase.getPurchaseNumber() )
+					.append("</td>")
+
+					.append("</tr>");
+		}
+		return html.toString();
+	}
+
 %>
 
 <html>
@@ -172,19 +198,25 @@
 					Integer.parseInt( request.getParameter( "productId" ) ) );
 			cart.addProduct(product, quantity);
 			request.getSession().setAttribute("cart", cart);
-			System.out.println(cart.getCustomer() + "'s cart: " + quantity + " " +product.getName() + " added!");
+			System.out.println(cart.getCustomer().getName() + "'s cart: " + quantity + " " +product.getName() + " added!");
 		}
 		else if ( operation != null && operation.equals("removeFromCart") ) {
 			Product product = productDAO.findProductById(
 					Integer.parseInt( request.getParameter( "productId" ) ) );
 			cart.removeProduct(product);
 			request.getSession().setAttribute("cart", cart);
-			System.out.println(cart.getCustomer() + "'s cart: " + product.getName() + " removed!");
+			System.out.println(cart.getCustomer().getName() + "'s cart: " + product.getName() + " removed!");
+		}
+		else if ( operation != null && operation.equals("buy") ) {
+			cart.submit();
+			cart.setCartNumber(cartFactory.generateCartNumber());
+			request.getSession().setAttribute("cart", cart);
+			System.out.println(cart.getCustomer().getName() + "'s cart: purchase submitted!" );
 		}
 		else if ( operation != null && operation.equals("clearCart") ) {
 			cart.clearCart();
 			request.getSession().setAttribute("cart", cart);
-			System.out.println(cart.getCustomer() + "'s cart cleared!" );
+			System.out.println(cart.getCustomer().getName() + "'s cart cleared!" );
 		}
 		else if ( operation != null && operation.equals("chooseCustomer") ) {
 			Customer customer = customerDAO.findCustomerById(
@@ -324,6 +356,12 @@
 				<input type="hidden" name="operation" value="clearCart">
 				<input type="submit" name="clearCart" value="Clear Cart">
 			</form>
+
+			<h2>Your previous purchases</h2>
+			<table>
+				<tr><th>ProductName</th><th>Producer</th><th>Quantity</th><th>Purchase Number</th><!--</th></tr>-->
+						<%= printPreviousOrders( purchaseDAO.findAllPurchasesByCustomer(customer), request.getContextPath() ) %>
+			</table>
 
 		<%
 			} // end else
