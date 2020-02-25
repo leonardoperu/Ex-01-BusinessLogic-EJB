@@ -9,7 +9,6 @@ import java.util.Hashtable;
 
 public class EJB3DaoFactory extends DAOFactory {
     private static Logger logger = Logger.getLogger("DAOFactory");
-    //@EJB private EJB3CustomerDAO CustomerDAO;
 
     public EJB3DaoFactory() {
     }
@@ -23,29 +22,27 @@ public class EJB3DaoFactory extends DAOFactory {
         Hashtable props = new Hashtable();
         //props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
 
-        props.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
-        //16:36:15,572 INFO  [org.wildfly.naming] (default task-1) WFNAM00025:
-        // org.jboss.naming.remote.client.InitialContextFactory is deprecated;
-        // new applications should use org.wildfly.naming.client.WildFlyInitialContextFactory instead
-        props.put(Context.PROVIDER_URL, "http-remoting://127.0.0.1:8080");
-        props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-        props.put("jboss.naming.client.ejb.context", true);
-
-        /*props.put("java.naming.factory.initial", "org.jnp.interfaces.NamingContextFactory");
-        props.put("java.naming.factory.url.pkgs", "org.jboss.naming:org.jnp.interfaces");
-        props.put("java.naming.provider.url", "127.0.0.1:1099");*/   //(new ServerInfo()).getHostAddress()  --- 127.0.0.1 --
+        /*16:36:15,572 INFO  [org.wildfly.naming] (default task-1) WFNAM00025:
+          org.jboss.naming.remote.client.InitialContextFactory is deprecated;
+          new applications should use org.wildfly.naming.client.WildFlyInitialContextFactory instead */
+        
+/*REMOTE*/  //props.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
+/*REMOTE*/  //props.put(Context.PROVIDER_URL, "http-remoting://127.0.0.1:8080");
+/*REMOTE*/  //props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
+/*REMOTE*/  //props.put("jboss.naming.client.ejb.context", true);
+/*LOCAL*/   props.put(Context.URL_PKG_PREFIXES, "org.jboss.naming.remote.client.InitialContextFactory");
         return props;
     }
 
     public CustomerDAO getCustomerDAO() {
         try {
             InitialContext context = getInitialContext();
-            //CustomerDAO result = (CustomerDAO)context.lookup("java:global/distributed-systems-demo/distributed-systems-demo.war/EJB3CustomerDAO!it.distributedsystems.model.dao.CustomerDAO");
-            CustomerDAO result = (CustomerDAO)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3CustomerDAO!it.distributedsystems.model.dao.CustomerDAO");
-            /*System.out.println("============= DEBUG ===================");
+/*LOCAL*/   CustomerDAO result = (CustomerDAO)context.lookup("java:global/distributed-systems-demo/distributed-systems-demo.war/EJB3CustomerDAO!it.distributedsystems.model.dao.CustomerDAO");
+/*REMOTE*/  //CustomerDAO result = (CustomerDAO)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3CustomerDAO!it.distributedsystems.model.dao.CustomerDAO");
+            /**/System.out.println("============= DEBUG ===================");
             System.out.println("CustomerDAO ottenuto!");
             System.out.println(result.toString());
-            System.out.println("=======================================");*/
+            System.out.println("=======================================");/**/
 
             /* java:global/distributed-systems-demo/distributed-systems-demo.jar/EJB3CustomerDAO!it.distributedsystems.model.dao.CustomerDAO
 	        java:app/distributed-systems-demo.jar/EJB3CustomerDAO!it.distributedsystems.model.dao.CustomerDAO
@@ -68,12 +65,12 @@ public class EJB3DaoFactory extends DAOFactory {
     public PurchaseDAO getPurchaseDAO() {
         try {
             InitialContext context = getInitialContext();
-            //PurchaseDAO result = (PurchaseDAO)context.lookup("distributed-systems-demo/EJB3PurchaseDAO/local");
-            PurchaseDAO result = (PurchaseDAO)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3PurchaseDAO!it.distributedsystems.model.dao.PurchaseDAO");
-            /*System.out.println("============= DEBUG ===================");
+/*LOCAL*/   PurchaseDAO result = (PurchaseDAO)context.lookup("java:global/distributed-systems-demo/distributed-systems-demo.war/EJB3PurchaseDAO!it.distributedsystems.model.dao.PurchaseDAO");
+/*REMOTE*/  //PurchaseDAO result = (PurchaseDAO)context.lookup("distributed-systems-demo/EJB3PurchaseDAO/local");/*System.out.println("============= DEBUG ===================");
+            /**/System.out.println("============= DEBUG ===================");
             System.out.println("PurchaseDAO ottenuto!");
             System.out.println(result.toString());
-            System.out.println("=======================================");*/
+            System.out.println("=======================================");/**/
 
             /*java:global/distributed-systems-demo/distributed-systems-demo.jar/EJB3PurchaseDAO!it.distributedsystems.model.dao.PurchaseDAO
 	        java:app/distributed-systems-demo.jar/EJB3PurchaseDAO!it.distributedsystems.model.dao.PurchaseDAO
@@ -92,12 +89,12 @@ public class EJB3DaoFactory extends DAOFactory {
     public ProductDAO getProductDAO() {
         try {
             InitialContext context = getInitialContext();
-            //ProductDAO result = (ProductDAO)context.lookup("distributed-systems-demo/EJB3ProductDAO/local");
-            ProductDAO result = (ProductDAO)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3ProductDAO!it.distributedsystems.model.dao.ProductDAO");
-            /*System.out.println("============= DEBUG ===================");
+/*LOCAL*/   ProductDAO result = (ProductDAO)context.lookup("java:global/distributed-systems-demo/distributed-systems-demo.war/EJB3ProductDAO!it.distributedsystems.model.dao.ProductDAO");
+/*REMOTE*/  //ProductDAO result = (ProductDAO)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3ProductDAO!it.distributedsystems.model.dao.ProductDAO");
+            /**/System.out.println("============= DEBUG ===================");
             System.out.println("ProductDAO ottenuto!");
             System.out.println(result.toString());
-            System.out.println("=======================================");*/
+            System.out.println("=======================================");/**/
 
             /*
             java:global/distributed-systems-demo/distributed-systems-demo.jar/EJB3ProductDAO!it.distributedsystems.model.dao.ProductDAO
@@ -118,12 +115,12 @@ public class EJB3DaoFactory extends DAOFactory {
     public ProducerDAO getProducerDAO() {
         try {
             InitialContext context = getInitialContext();
-            /*//ProducerDAO result = (ProducerDAO)context.lookup("distributed-systems-demo/EJB3ProducerDAO/local");*/
-            ProducerDAO result = (ProducerDAO)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3ProducerDAO!it.distributedsystems.model.dao.ProducerDAO");
-            /*System.out.println("============= DEBUG ===================");
+/*LOCAL*/  ProducerDAO result = (ProducerDAO)context.lookup("java:global/distributed-systems-demo/distributed-systems-demo.war/EJB3ProducerDAO!it.distributedsystems.model.dao.ProducerDAO");
+/*REMOTE*/  //ProducerDAO result = (ProducerDAO)context.lookup("ejb:distributed-systems-demo/distributed-systems-demo.jar/EJB3ProducerDAO!it.distributedsystems.model.dao.ProducerDAO");
+            /**/System.out.println("============= DEBUG ===================");
             System.out.println("ProducerDAO ottenuto!");
             System.out.println(result.toString());
-            System.out.println("=======================================");*/
+            System.out.println("=======================================");/**/
 
             /* java:global/distributed-systems-demo/distributed-systems-demo.jar/EJB3ProducerDAO!it.distributedsystems.model.dao.CustomerDAO
 	        java:app/distributed-systems-demo.jar/EJB3ProducerDAO!it.distributedsystems.model.dao.CustomerDAO

@@ -6,15 +6,15 @@ import it.distributedsystems.model.dao.Purchase;
 import it.distributedsystems.model.dao.PurchaseDAO;
 
 import javax.ejb.EJB;
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import javax.ejb.Stateful;
 import javax.persistence.GeneratedValue;
 import java.util.ArrayList;
 import java.util.List;
 
 @Stateful
-//@Local(Cart.class)
-@Remote(Cart.class)
+@Local(Cart.class)
+//@Remote(Cart.class)
 public class EJB3Cart implements Cart {
     private Customer customer;
     @GeneratedValue

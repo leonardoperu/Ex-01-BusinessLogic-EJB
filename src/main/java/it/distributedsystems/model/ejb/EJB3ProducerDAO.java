@@ -5,7 +5,7 @@ package it.distributedsystems.model.ejb;
 import it.distributedsystems.model.dao.Producer;
 import it.distributedsystems.model.dao.ProducerDAO;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -14,8 +14,8 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
-//@Local(ProducerDAO.class)
-@Remote(ProducerDAO.class) //-> TODO: serve nella versione clustering???
+@Local(ProducerDAO.class)
+//@Remote(ProducerDAO.class) //-> TODO: serve nella versione clustering???
 public class EJB3ProducerDAO implements ProducerDAO {
 
     @PersistenceContext(unitName = "distributed-systems-demo")

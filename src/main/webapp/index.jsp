@@ -193,12 +193,14 @@
 			out.println("<!-- inserted product '" + product.getName() + "' with id = '" + id + "' -->");
 		}
 		else if ( operation != null && operation.equals("addToCart") ) {
-			int quantity = Integer.parseInt( request.getParameter("quantity"));
-			Product product = productDAO.findProductById(
-					Integer.parseInt( request.getParameter( "productId" ) ) );
-			cart.addProduct(product, quantity);
-			request.getSession().setAttribute("cart", cart);
-			System.out.println(cart.getCustomer().getName() + "'s cart: " + quantity + " " +product.getName() + " added!");
+			if (request.getSession().getAttribute("customer") != null) {
+				int quantity = Integer.parseInt(request.getParameter("quantity"));
+				Product product = productDAO.findProductById(
+						Integer.parseInt(request.getParameter("productId")));
+				cart.addProduct(product, quantity);
+				request.getSession().setAttribute("cart", cart);
+				System.out.println(cart.getCustomer().getName() + "'s cart: " + quantity + " " + product.getName() + " added!");
+			}
 		}
 		else if ( operation != null && operation.equals("removeFromCart") ) {
 			Product product = productDAO.findProductById(
@@ -311,6 +313,7 @@
 		<a href="<%= request.getContextPath() %>">Ricarica lo stato iniziale di questa pagina</a>
 	</div>
 
+
 	<br/>
 	<hr/>
 
@@ -319,6 +322,7 @@
 		<%
 			if(request.getSession().getAttribute("customer")==null) {
 		%>
+		<h2>Before adding items to your cart, you need to choose your identity below</h2>
 		<form>
 			<label>Customer</label>
 			<select name="customer" required>

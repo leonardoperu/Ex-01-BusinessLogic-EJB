@@ -15,8 +15,8 @@ import java.util.List;
 
 
 @Stateless
-//@Local(ProductDAO.class)
-@Remote(ProductDAO.class)  //-> TODO: serve nella versione clustering???
+@Local(ProductDAO.class)
+//@Remote(ProductDAO.class)  //-> TODO: serve nella versione clustering???
 public class EJB3ProductDAO implements ProductDAO {
 
     @PersistenceContext(unitName = "distributed-systems-demo")

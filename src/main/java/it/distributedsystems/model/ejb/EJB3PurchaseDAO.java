@@ -7,7 +7,7 @@ import it.distributedsystems.model.dao.Product;
 import it.distributedsystems.model.dao.Purchase;
 import it.distributedsystems.model.dao.PurchaseDAO;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -18,8 +18,8 @@ import java.util.List;
 
 
 @Stateless
-//@Local(PurchaseDAO.class)
-@Remote(PurchaseDAO.class)  //-> TODO: serve nella versione clustering???
+@Local(PurchaseDAO.class)
+//@Remote(PurchaseDAO.class)  //-> TODO: serve nella versione clustering???
  public class EJB3PurchaseDAO implements PurchaseDAO {
 
     @PersistenceContext(unitName = "distributed-systems-demo")
