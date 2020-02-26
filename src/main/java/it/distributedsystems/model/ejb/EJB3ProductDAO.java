@@ -1,12 +1,17 @@
 package it.distributedsystems.model.ejb;
 
 //import it.distributedsystems.model.logging.OperationLogger;
+
 import it.distributedsystems.model.dao.Producer;
 import it.distributedsystems.model.dao.Product;
 import it.distributedsystems.model.dao.ProductDAO;
 import it.distributedsystems.model.dao.Purchase;
 
-import javax.ejb.*;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
@@ -24,7 +29,7 @@ public class EJB3ProductDAO implements ProductDAO {
 
 
     @Override
-//    @Interceptors(OperationLogger.class)
+    @Interceptors(OperationLogger.class)
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int insertProduct(Product product) {
         if(product.getProducer()!=null && product.getProducer().getId()>0)

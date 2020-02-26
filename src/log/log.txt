@@ -1,0 +1,7 @@
+[2020-02-26T10:12:47.129]: EJB3CustomerDAO inserted CUSTOMER Sheev Palpatine [id: 71] into the DB.
+[2020-02-26T10:13:15.498]: EJB3ProducerDAO inserted PRODUCER Huawei [id: 72] into the DB.
+[2020-02-26T10:14:00.535]: EJB3PurchaseDAO inserted PURCHASE (Leonardo Perugini,Mi 9 Lite) [id: 73] into the DB.
+[2020-02-26T10:14:00.568]: EJB3PurchaseDAO inserted PURCHASE (Leonardo Perugini,MacBook Pro 2012 charger) [id: 74] into the DB.
+[2020-02-26T10:31:45.307]: EJB3PurchaseDAO inserted PURCHASE (Alessia Cioffi,Flip-Flop JK) [id: 75] into the DB.
+[2020-02-26T10:31:45.386]: EJB3PurchaseDAO inserted PURCHASE (Alessia Cioffi,Mi 9 Lite) [id: 76] into the DB.
+[2020-02-26T10:39:45.907]: EJB3PurchaseDAO inserted PURCHASE (Sheev Palpatine,Ryzen 5 3600 CPU) [id: 77] into the DB.
